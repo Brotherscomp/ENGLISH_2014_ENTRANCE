@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ENGLISH 2014 ENTRANCE</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    .quiz-container {
+      background: rgb(228, 221, 221);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 1200px;
+      margin: auto;
+    }
+    .question {
+      font-weight: bold;
+    }
+    .options label {
+      display: block;
+      margin-bottom: 25px;
+    }
+    .submit-btn, .next-btn, .prev-btn {
+      margin-top: 20px;
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    .submit-btn:hover, .next-btn:hover, .prev-btn:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <div id="quiz"></div>
+    <button class="prev-btn" onclick="prevQuestion()" style="display:none">Previous</button>
+    <button class="submit-btn" onclick="submitAnswer()">Submit</button>
+    <button class="next-btn" onclick="nextQuestion()" style="display:none">Next</button>
+    <div id="result" class="result"></div>
+  </div>
+
+<script>
+const questions = [
+  // Grammar Questions (1-38)
+  {
+    question: "I like ______ sugar in my tea. Do have some, please?",
+    options: ["a little", "any", "many", "a few"],
+    answer: 0
+  },
+  {
+    question: "Take your umbrella with you. It ______ rain in the afternoon.",
+    options: ["must", "might", "has to", "should"],
+    answer: 1
+  },
+  {
+    question: "I think I saw you coming out of the Director's office. ______ did you go there?",
+    options: ["Who", "What", "For how", "Why"],
+    answer: 3
+  },
+  {
+    question: "I eat nearly all kinds of food. ______ drinks, I only like soft drinks and fruit juices.",
+    options: ["For", "As far as", "With respect to", "In spite of"],
+    answer: 1
+  },
+  {
+    question: "Bekalu: How ______ do you watch television? Dinku: Every evening.",
+    options: ["often", "much", "happy", "relaxed"],
+    answer: 0
+  },
+  {
+    question: "He ______ something at the roadside and started running as fast as he could.",
+    options: ["sees", "saw", "was seen", "has seen"],
+    answer: 1
+  },
+  {
+    question: "You say your friend has not been around for some time. ______ did you last see him.",
+    options: ["Who", "Why", "Wherever", "When"],
+    answer: 3
+  },
+  {
+    question: "We didn't like the talk show, ______ we switched to the movie channel.",
+    options: ["as", "because", "so as", "so"],
+    answer: 3
+  },
+  {
+    question: "My friend is sometimes hard to convince, but I like him ______.",
+    options: ["even", "although", "likewise", "nonetheless"],
+    answer: 3
+  },
+  {
+    question: "Tomorrow, Sofanit ______ her assignments the whole day.",
+    options: ["have been doing", "does", "would have done", "will be doing"],
+    answer: 3
+  },
+  {
+    question: "Members of the team sat down under a tree and rested because they were ______ tired after the long journey on foot.",
+    options: ["extremely", "quickly", "hardly", "fast"],
+    answer: 0
+  },
+  {
+    question: "The country was able to register a significant economic growth ______ the negative impacts of both internal and external factors.",
+    options: ["in spite", "despite", "although", "even though"],
+    answer: 1
+  },
+  {
+    question: "I hate going out for a walk ______ the rainy season.",
+    options: ["at", "during", "at the same time as", "while"],
+    answer: 1
+  },
+  {
+    question: "Our housemaid is really a nice woman. She ______ a mother.",
+    options: ["is as", "is like", "acts", "looks"],
+    answer: 1
+  },
+  {
+    question: "Many more books ______ for the school library next year.",
+    options: ["buy", "will buy", "are bought", "will be bought"],
+    answer: 3
+  },
+  {
+    question: "All the participants of the meeting ______ to express their opinions freely.",
+    options: ["allowed", "were allow", "were allowed", "allow"],
+    answer: 2
+  },
+  {
+    question: "I think they ______ the issue at the next meeting.",
+    options: ["are going to discuss", "discussing", "will be going to discuss", "going to discuss"],
+    answer: 0
+  },
+  {
+    question: "Although the doctor has warned him several times, he hasn't stopped ______ yet.",
+    options: ["to drink", "to get drunk", "drinks", "drinking"],
+    answer: 3
+  },
+  {
+    question: "If he ______ more carefully, he wouldn't have had the accident.",
+    options: ["had driven", "would drive", "drove", "has driven"],
+    answer: 0
+  },
+  {
+    question: "The place is a long way from here. I think we ______ take a taxi.",
+    options: ["should", "ought", "should have", "had"],
+    answer: 0
+  },
+  {
+    question: "The new park is really ______. You should go and see it.",
+    options: ["fascinated", "fascinating", "fascinates", "fascination"],
+    answer: 1
+  },
+  {
+    question: "We remained idle yesterday; we ______ played football ______ watched television.",
+    options: ["neither ... nor", "either ...", "both ... and", "haven't"],
+    answer: 0
+  },
+  {
+    question: "Many people do not ______ it is easy to find jobs these days.",
+    options: ["count", "think", "mean", "dare"],
+    answer: 1
+  },
+  {
+    question: "My mobile phone is missing. I ______ dropped it somewhere.",
+    options: ["would have", "couldn't have", "might have", "haven't dropped"],
+    answer: 2
+  },
+  {
+    question: "If you practice regularly, there is no doubt that your English ______ much better.",
+    options: ["has been", "is", "will be", "was"],
+    answer: 2
+  },
+  {
+    question: "Next time you come to class don't forget ______ your textbook.",
+    options: ["to bring", "bringing", "having brought", "bring"],
+    answer: 0
+  },
+  {
+    question: "There is a lot of dissatisfaction at present, but ______ that things will improve in the coming years.",
+    options: ["I'm looking", "I'm certain", "I'm not sure", "I'm worried"],
+    answer: 1
+  },
+  {
+    question: "Girum: Let's go to the theatre this afternoon. There is a new play at the National Theatre. Mihret: I wish I ______ the time. I have a lot of work to today.",
+    options: ["had", "have had", "have", "will have"],
+    answer: 0
+  },
+  {
+    question: "You have ______ to do at home this afternoon, so you can't go out.",
+    options: ["nothing", "not", "anything", "something"],
+    answer: 3
+  },
+  {
+    question: "Have all the committee members arrived? ______ the meeting.",
+    options: ["They have started", "It is about time we started", "It is not possible to conduct", "It is the chairman who called"],
+    answer: 1
+  },
+  {
+    question: "My younger brother is very much interested ______ studying robotics.",
+    options: ["on", "in", "for", "at"],
+    answer: 1
+  },
+  {
+    question: "Muktar went to Jimma ______ see his old friends.",
+    options: ["for", "because", "as to", "in order to"],
+    answer: 3
+  },
+  {
+    question: "I wish I ______ a pilot so that I can travel to different parts of the world.",
+    options: ["have been", "were", "am", "can be"],
+    answer: 1
+  },
+  {
+    question: "If you don't want to be broke, you ______ your money wisely.",
+    options: ["ought to do", "ought to use", "has used", "ought have used"],
+    answer: 1
+  },
+  {
+    question: "Students who came late this morning ______ to report to the Unit Leader's office.",
+    options: ["have told", "would tell", "told", "were told"],
+    answer: 3
+  },
+  {
+    question: "The girl is ______ to take care of herself.",
+    options: ["young", "old enough", "enough old", "old"],
+    answer: 1
+  },
+  {
+    question: "They are working very hard on the project, and ______ they will complete it in time.",
+    options: ["convinced", "I am sure that", "hesitate", "I have no point"],
+    answer: 1
+  },
+  {
+    question: "My friend says that she ______ all her assignments already.",
+    options: ["has done", "will be done", "will be doing", "will do"],
+    answer: 0
+  },
+
+  // Comprehension Questions (39-40)
+  {
+    question: "Rapid population growth is likely to lead to high cost of living.",
+    options: [
+      "It is important to control population growth.",
+      "Rapid population growth is a threat to our survival.",
+      "It is important to control cost of living.",
+      "High cost of living may result from rapid population growth."
+    ],
+    answer: 3
+  },
+  {
+    question: "I wish I had talked to him when I saw him yesterday.",
+    options: [
+      "When I saw him yesterday I should have talked to him.",
+      "I talked to him when I saw him yesterday.",
+      "I saw him yesterday and I avoided speaking to him.",
+      "I saw him yesterday and was not interested to talk to him."
+    ],
+    answer: 0
+  },
+  {
+    question: "We need additional fuel to keep the machine in motion, or it will stop suddenly.",
+    options: ["effect", "control", "movement", "travel"],
+    answer: 2,
+    underlined: "motion"
+  },
+  {
+    question: "The police are still looking for the murderer who fatally shot three people and disappeared.",
+    options: ["contender", "burglar", "killer", "loser"],
+    answer: 2,
+    underlined: "murderer"
+  },
+  {
+    question: "His job is to guide invited guests to their seats in the hall.",
+    options: ["attention", "focus", "responsibility", "position"],
+    answer: 3,
+    underlined: "seats"
+  },
+  {
+    question: "The patient who was in an accident remained immobile on the stretcher for about two hours.",
+    options: ["helpless", "restless", "motionless", "hopeless"],
+    answer: 2,
+    underlined: "immobile"
+  },
+  {
+    question: "A father, a mother and children who live together make up a family.",
+    options: ["form", "start", "conserve", "join"],
+    answer: 0,
+    underlined: "make up"
+  },
+  {
+    question: "They wasted some time at the beginning and now they are under pressure to complete the work in the time given.",
+    options: ["tension", "fever", "struggle", "strength"],
+    answer: 0,
+    underlined: "pressure"
+  },
+  {
+    question: "The man says that he can beat anybody in a fight, but actually he is a cowardly bully.",
+    options: ["brave", "confident", "dishonest", "timid"],
+    answer: 3,
+    underlined: "cowardly"
+  },
+  {
+    question: "The police should heighten the awareness of the community in order to put the rising criminal acts under control.",
+    options: ["legalize", "realize", "materialize", "raise"],
+    answer: 3,
+    underlined: "heighten"
+  },
+
+  // Sentence Completion Questions (69-70)
+  {
+    question: "At the meeting, the Chairman allowed ______ of opinions for participation.",
+    options: ["description", "perception", "instability", "diversity"],
+    answer: 3
+  },
+  {
+    question: "The government ______ a new program which will help to solve the problem of over flooding during the rainy season.",
+    options: ["reflected", "advanced", "launched", "admitted"],
+    answer: 2
+  },
+  {
+    question: "My friend took out a ______ from a bank to buy a house, but he could not pay it back in time.",
+    options: ["profit", "saving", "payment", "loan"],
+    answer: 3
+  },
+  {
+    question: "The newly married couple has just gone to Hawassa for their ______.",
+    options: ["honeymoon", "tour", "visit", "lifestyle"],
+    answer: 0
+  },
+  {
+    question: "Although we are facing many problems at present, we should not be ______ because I am sure that things will become better in the future.",
+    options: ["pessimistic", "hopeful", "optimistic", "ridiculous"],
+    answer: 0
+  },
+  {
+    question: "The leader of the party will soon ______ that his party has won the recent national election.",
+    options: ["boast", "lead", "declare", "advance"],
+    answer: 2
+  },
+  {
+    question: "The scene of the plane crash where all the passengers on board the plane lost their lives was really ______.",
+    options: ["gigantic", "terrifying", "boring", "exhausting"],
+    answer: 1
+  },
+  {
+    question: "I do not need to ______ the mobile numbers of my contacts because I have them all on my mobile phone.",
+    options: ["embrace", "memorise", "illicit", "familiarise"],
+    answer: 1
+  },
+  {
+    question: "read/notes/you/to/the/must/your/test/do",
+    options: [
+      "You must read your notes to do the test.",
+      "You must do read the test notes to your.",
+      "The test notes to read you must your do.",
+      "Read notes must to your do the test you."
+    ],
+    answer: 0,
+    type: "word_order"
+  },
+  {
+    question: "they/home/are/today/early/coming",
+    options: [
+      "Coming are they early today home?",
+      "Are coming early home today they?",
+      "Are they coming home early today?",
+      "They are coming early home today?"
+    ],
+    answer: 2,
+    type: "word_order"
+  },
+  {
+    question: "if/they/have/us/phoned/we/joined/them/had/would",
+    options: [
+      "We have if would them us had they joined phoned.",
+      "They would joined them have phoned if had we us.",
+      "If phoned them would they joined us have we had.",
+      "They would have joined us if we had phoned them."
+    ],
+    answer: 3,
+    type: "word_order"
+  },
+    {
+    question: "Choose the word with the correct spelling:",
+    options: ["playright", "courageous", "approch", "imature"],
+    answer: 1,
+    type: "spelling"
+  },
+  {
+    question: "Choose the word with the correct spelling:",
+    options: ["licence", "accomodate", "simultaneously", "forcast"],
+    answer: 2,
+    type: "spelling"
+  },
+
+  // Writing Section - Punctuation and Capitalization (82-85)
+  {
+    question: "Choose the sentence with correct punctuation and capitalization:",
+    options: [
+      "We are going to guba to see the great renaissance Dam In September.",
+      "We are going to guba to see the Great Renaissance Dam in september.",
+      "We are going to Guba to see the Great Renaissance Dam in September.",
+      "We are going to Guba to see the great renaissance Dam in september."
+    ],
+    answer: 2,
+    type: "punctuation"
+  },
+  {
+    question: "Choose the sentence with correct punctuation and capitalization:",
+    options: [
+      "The teacher said, 'Answer the questions in complete sentences.'",
+      "The teacher said, Answer the questions in complete sentences.",
+      "The teacher said answer the questions in complete sentences.",
+      "The teacher said, 'answer the questions in complete sentences.'"
+    ],
+    answer: 0,
+    type: "punctuation"
+  },
+  {
+    question: "Choose the sentence with correct punctuation:",
+    options: [
+      "He wanted to find out how the accident occurred?",
+      "He wanted to find out how the accident occurred.",
+      "He wanted to find out how the accident occurred!",
+      "He wanted to find out how the accident occurred"
+    ],
+    answer: 1,
+    type: "punctuation"
+  },
+  {
+    question: "Choose the sentence with correct punctuation:",
+    options: [
+      "She went to the shop and bought, a kilo of sugar, a litre of milk, a kilo of bananas and some vegetables.",
+      "She went to the shop and bought, a kilo of sugar a litre of milk a kilo of bananas and some vegetables.",
+      "She went to the shop and bought a kilo of sugar a litre of milk a kilo of bananas and some vegetables.",
+      "She went to the shop and bought a kilo of sugar, a litre of milk, a kilo of bananas and some vegetables."
+    ],
+    answer: 3,
+    type: "punctuation"
+  },
+  {
+    question: "Which of the following is an appropriate opening salutation in an informal letter?",
+    options: [
+      "Dear Dr. Jemal",
+      "Dear Mr. Samuel",
+      "Dear Mrs. Tsehay",
+      "Dear Sarah"
+    ],
+    answer: 3,
+    type: "letter_writing"
+  },
+  {
+    question: "The sentence, 'I'm extremely delighted to hear that you are going to join the University next year' is possibly taken from",
+    options: [
+      "the body of a formal letter",
+      "the end of a formal letter",
+      "the beginning of an informal letter",
+      "the closing remarks of an informal letter"
+    ],
+    answer: 2,
+    type: "letter_writing"
+  },
+  {
+    question: "The sender's address in an informal letter appears",
+    options: [
+      "near the right margin",
+      "near the left margin",
+      "below the closing salutation",
+      "below the date"
+    ],
+    answer: 1,
+    type: "letter_writing"
+  },
+  {
+    question: "Miriam: What sort of films do you like to watch during your free time?\nSara: ______",
+    options: [
+      "I sometimes watch science fiction but I love romantic films.",
+      "Films are a good pass-time entertainment.",
+      "My favourite actress is Mulualem.",
+      "I haven't watched any films for a couple of weeks."
+    ],
+    answer: 0,
+    type: "dialogue"
+  },
+  {
+    question: "Teacher: ______\nStudent: Earthquake is one type of natural disaster.",
+    options: [
+      "Where do natural disasters occur?",
+      "What do you meant by natural disaster?",
+      "Give an example of a natural disaster.",
+      "When natural disasters occur in Ethiopia?"
+    ],
+    answer: 2,
+    type: "dialogue"
+  },
+  {
+    question: "Tariku: ______\nBarnabas: I think that is what we need in order to get rid of poverty.",
+    options: [
+      "There are a lot of challenges that our country is facing.",
+      "We must prevent conflicts and live together peacefully.",
+      "I do not understand why some people like to cause trouble to others.",
+      "Many young people are in need of jobs."
+    ],
+    answer: 1,
+    type: "dialogue"
+  },
+  {
+    question: "Seifu: Surely, the internet is not a perfect invention.\nBiruk: What do you mean?\nSeifu: ______",
+    options: [
+      "To put it another way, it has many shortcomings.",
+      "Using the internet speeds up our work.",
+      "If you want, I can show you how to use it.",
+      "The internet is the art of the technology."
+    ],
+    answer: 0,
+    type: "dialogue"
+  },
+  {
+    question: "Father: Please let me know that you have arrived there safely.\nDaughter: ______",
+    options: [
+      "I will call you as soon as I reach there.",
+      "I'm sure I will enjoy my flight.",
+      "I am sure we will be there by this time tomorrow.",
+      "It is going to be a long journey."
+    ],
+    answer: 0,
+    type: "dialogue"
+  },
+  {
+    question: "Daughter: Are you ready, Mum?\nMother: ______",
+    options: [
+      "Yes, we will ready to buy a lot of things.",
+      "No, there is no one else coming.",
+      "Yes, I am coming.",
+      "What are you doing there?"
+    ],
+    answer: 2,
+    type: "dialogue"
+  },
+  {
+    question: "Gadissa: I'm very much in need of money but I don't know who I can ask.\nGemechu: ______",
+    options: [
+      "I asked my elder brother to give me some money but he refused.",
+      "Why do you need the money?",
+      "Our father might give you some if you ask him.",
+      "I think we need to save some of the money that we earn every month."
+    ],
+    answer: 2,
+    type: "dialogue"
+  },
+  {
+    question: "Journalist: Do you think there is enough fish for you to catch every day in this lake?\nFisherman: ______",
+    options: [
+      "The lake is home to different kinds of fish and other aquatic animals.",
+      "My livelihood depends on fishing, and I love fishing more than anything else.",
+      "Most of us who live around here do fishing both for food and sport.",
+      "There are more fishermen nowadays and there aren't enough for everyone."
+    ],
+    answer: 3,
+    type: "dialogue"
+  },
+  {
+    question: "Aman: Talking on the mobile phone is not free from problems.\nAbdul: How?\nAman: ______",
+    options: [
+      "There may be sudden connection problem.",
+      "Smart phones are expensive for many people.",
+      "Everybody has a mobile phone these days.",
+      "I don't pick up the phone if I don't want to."
+    ],
+    answer: 0,
+    type: "dialogue"
+  },
+  {
+    question: "Dinku: Traffic accidents continue to be real problems in this city.\nFikru: ______",
+    options: [
+      "The new roads that are being built in different parts of the city are very wide.",
+      "Many people use buses because they are cheaper.",
+      "The population of the city is growing fast and the city is expanding in all directions.",
+      "Both drivers and pedestrians must be much more careful on the road."
+    ],
+    answer: 3,
+    type: "dialogue",
+    explanation: "This response directly addresses the problem by suggesting a solution that involves both drivers and pedestrians."
+  },
+  {
+    question: "Farmer 1: Why are we not able to get enough crops from the land recently?\nFarmer 2: It is because we have been farming the land for many years without making any changes on it.\nFarmer 3: ______",
+    options: [
+      "We should continue to work as hard as we used to.",
+      "We always work very hard but we do not produce enough.",
+      "We may not even feed our families.",
+      "Plus the fact that we have never used fertilizers is another cause."
+    ],
+    answer: 3,
+    type: "dialogue",
+    explanation: "This response builds on Farmer 2's explanation by adding another relevant factor (lack of fertilizers)."
+  },
+  {
+    question: "Mubarak: ______\nSemir: In my case, there were more primary school teachers than in the secondary school.",
+    options: [
+      "The teachers in my primary school were more helpful than those in my secondary school.",
+      "The number of teachers in my secondary school was greater than those in my primary school.",
+      "There are many differences between primary and secondary school teachers.",
+      "There were many more female teachers than male teachers in my primary school."
+    ],
+    answer: 1,
+    type: "dialogue",
+    explanation: "This prompt establishes a comparison that Semir then responds to with his contrasting experience."
+  },
+  {
+    question: "Father: ______\nSon: But Dad, I have agreed to study with my friends on Saturday.",
+    options: [
+      "The weekend is approaching, and you must be looking forward to it.",
+      "What are you going to do next Saturday?",
+      "You know that your grandmother loves you very much and talks about you always.",
+      "I have decided that you will go and visit your grandmother on Saturday."
+    ],
+    answer: 3,
+    type: "dialogue",
+    explanation: "The son's response indicates he's objecting to a prior plan made by his father about Saturday."
+  },
+  {
+    question: "Fikirte: ______\nHilina: I am your friend and I am always ready to do anything that makes you happy.",
+    options: [
+      "If you like me, you will go to my parents' house with me tomorrow.",
+      "Is there anything I can do for you?",
+      "I have some good news to share with you, but don't be in a hurry.",
+      "Can you guess what I want to do for you?"
+    ],
+    answer: 0,
+    type: "dialogue",
+    explanation: "Hilina's response suggests Fikirte made a request involving friendship and support."
+  },
+  {
+    question: "Garoma: ______\nAlambo: I am against all kinds of discrimination.",
+    options: [
+      "People with disability could be moderate.",
+      "Disability should not be a reason for discrimination.",
+      "There are people with disability all over the world.",
+      "When did you first hear about discrimination?"
+    ],
+    answer: 1,
+    type: "dialogue",
+    explanation: "Alambo's general statement about discrimination responds best to a specific statement about disability discrimination."
+  },
+  {
+    question: "Chairperson: Let us discuss how inflation in our country is affecting our work.\nParticipant: ______",
+    options: [
+      "There is inflation all over the world and there is a need for global solution to control it.",
+      "I think inflation is difficult to control.",
+      "Excuse me for interrupting but we should first discuss the problems in our organization.",
+      "There is no doubt that inflation affects the lives of our citizens in many ways."
+    ],
+    answer: 2,
+    type: "dialogue",
+    explanation: "This response appropriately redirects the discussion while acknowledging the chairperson's request."
+  },
+   {
+    question: "Fekadu: Which radio station do you listen to?\nAlemu: ______",
+    options: [
+      "I didn't listen to any radio programmes these last two days.",
+      "These days there are many radio programmes to listen to.",
+      "Radio Fana programmes are my favourite.",
+      "I am not sure how many radio programmes there are at present."
+    ],
+    answer: 2,
+    type: "dialogue",
+    explanation: "The question asks about a specific radio station preference, making option C the most direct answer."
+  },
+  {
+    question: "Tesfu: I think we are going to face serious social problems in our city.\nBereket: How?\nTesfu: ______",
+    options: [
+      "All of us have a responsibility to tackle our social problems.",
+      "To give you an idea, there are too many unemployed young people in the city.",
+      "The solution to our problems is for us to sit together and work towards a common goal.",
+      "The administration is doing its best to create jobs to reduce the number of unemployed people."
+    ],
+    answer: 1,
+    type: "dialogue",
+    explanation: "Option B provides a concrete example to support Tesfu's initial claim about social problems."
+  },
+  {
+    question: "Ahmed: I was very hungry and actually ate a lot at lunch time.\nMuhaba: ______",
+    options: [
+      "They say hunger is the best sauce.",
+      "Food has become expensive recently.",
+      "I and my best friend eat lunch together frequently.",
+      "I usually can't find a good place to eat."
+    ],
+    answer: 0,
+    type: "dialogue",
+    explanation: "Option A is the only response that directly relates to Ahmed's statement about hunger and eating."
+  },
+  {
+    question: "Foreigner: ______\nWolde: Oh, sorry, I don't know. I don't live in this part of the city.",
+    options: [
+      "Can you tell me where the Capital Hotel is?",
+      "Excuse me. Do you live near here, if I may ask?",
+      "Can I talk to you for a minute, please?",
+      "How long have you been living here?"
+    ],
+    answer: 0,
+    type: "dialogue",
+    explanation: "Wolde's response indicates he was asked for local information he couldn't provide, making option A the most likely question."
+  },
+  {
+    question: "The Chairman: People who live in this Wereda face a lot of problems.\nParticipant: ______",
+    options: [
+      "The awful thing is nobody seems to be concerned about solving any of their problems.",
+      "The population of this Wereda are hardworking.",
+      "I feel that it is not the best way of problem solving like this in the future, Mr. Chairman.",
+      "The people of this Wereda have respect for one another."
+    ],
+    answer: 0,
+    type: "dialogue",
+    explanation: "This response directly addresses the Chairman's statement about problems by expressing concern about the lack of solutions."
+  },
+  {
+    question: "Student: I am sorry but I haven't understood your last point.\nTeacher: ______",
+    options: [
+      "I don't think you understand.",
+      "You will have some point about it.",
+      "Do you have any other questions?",
+      "Ok. Let me rephrase what I just said."
+    ],
+    answer: 3,
+    type: "dialogue",
+    explanation: "This is the most appropriate pedagogical response, showing willingness to clarify the point for better understanding."
+  },
+  {
+    question: "Temesgen: Modern health treatment has become far too expensive these days.\nDilamo: ______",
+    options: [
+      "There are more medical doctors nowadays.",
+      "I have no option but go to a traditional healer because the treatment is less expensive.",
+      "If you cannot afford to pay you better stay at home.",
+      "We need to get treatments when we become ill."
+    ],
+    answer: 1,
+    type: "dialogue",
+    explanation: "This response provides a practical alternative that directly relates to the issue of expensive modern treatment."
+  },
+  {
+    question: "Duressa: Are you the eldest in your family?\nDemitu: ______",
+    options: [
+      "My sister is older than me.",
+      "My brothers are all older than me.",
+      "I am the youngest of the children of my family.",
+      "We are a large family with four children."
+    ],
+    answer: 2,
+    type: "dialogue",
+    explanation: "This is the most complete answer that clearly states the speaker's position in the family hierarchy."
+  },
+  {
+    question: "Bikila: Could you tell me where the Federal Ministry of Education building is?\nOlani: ______",
+    options: [
+      "The Ministry of Education has many offices.",
+      "It is at Arat Kilo, close to the Miazia 27 Monument.",
+      "Why do you want to know the location?",
+      "You mean the education beauro of Addis Ababa."
+    ],
+    answer: 1,
+    type: "dialogue",
+    explanation: "This response directly answers the question by providing the specific location of the building."
+  },
+  {
+    question: "Sihan: How often do you read in the library?\nShevit: ______",
+    options: [
+      "The library is far from my dormitory.",
+      "I don't like reading in the library.",
+      "I spend most of my evenings reading in the library.",
+      "I like reading at home."
+    ],
+    answer: 2,
+    type: "dialogue",
+    explanation: "This is the only response that directly answers the 'how often' question by describing frequency of library use."
+  }
+];
+    let currentQuestion = 0;
+    let userAnswers = new Array(questions.length).fill(null);
+    const quizElement = document.getElementById('quiz');
+    const resultElement = document.getElementById('result');
+    const prevButton = document.querySelector('.prev-btn');
+    const nextButton = document.querySelector('.next-btn');
+    const submitButton = document.querySelector('.submit-btn');
+
+    function displayQuestion() {
+      const question = questions[currentQuestion];
+      const optionsHtml = question.options.map((option, index) => `
+        <label>
+          <input type="radio" name="option" value="${index}" 
+            ${userAnswers[currentQuestion] === index ? 'checked' : ''}>
+          ${option}
+        </label>
+      `).join('');
+
+      quizElement.innerHTML = `
+        <div class="question">${currentQuestion + 1}. ${question.question}</div>
+        <div class="options">${optionsHtml}</div>
+      `;
+
+      prevButton.style.display = currentQuestion === 0 ? 'none' : 'inline-block';
+      nextButton.style.display = currentQuestion === questions.length - 1 ? 'none' : 'inline-block';
+      submitButton.style.display = currentQuestion === questions.length - 1 ? 'inline-block' : 'none';
+
+      quizElement.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          userAnswers[currentQuestion] = parseInt(e.target.value);
+        });
+      });
+    }
+
+    function nextQuestion() {
+      if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        displayQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        displayQuestion();
+      }
+    }
+
+    function submitAnswer() {
+      const unansweredIndex = userAnswers.findIndex(answer => answer === null);
+      if (unansweredIndex !== -1) {
+        alert('Please answer all questions before submitting.');
+        currentQuestion = unansweredIndex;
+        displayQuestion();
+        return;
+      }
+
+      const score = userAnswers.reduce(
+        (acc, answer, index) => acc + (answer === questions[index].answer ? 1 : 0),
+        0
+      );
+      resultElement.textContent = `Your score: ${score}/${questions.length}`;
+    }
+
+    displayQuestion();
+</script>
+<script>
+    // ... (keep the questions array and variable declarations same as before)
+
+    let isSubmitted = false; // Add submission state tracker
+
+    function displayQuestion() {
+      const question = questions[currentQuestion];
+      let optionsHtml = '';
+
+      if (isSubmitted) {
+        // Show answers with color coding
+        optionsHtml = question.options.map((option, index) => {
+          let style = '';
+          if (index === question.answer) {
+            style = 'background-color: #d4edda;'; // Green for correct answer
+          } else if (index === userAnswers[currentQuestion] && index !== question.answer) {
+            style = 'background-color: #f8d7da;'; // Red for wrong user answer
+          }
+          return `
+            <div style="padding: 5px; margin: 2px; ${style}">
+              <input type="radio" disabled 
+                ${userAnswers[currentQuestion] === index ? 'checked' : ''}>
+              ${option}
+            </div>
+          `;
+        }).join('');
+      } else {
+        // Normal question display
+        optionsHtml = question.options.map((option, index) => `
+          <label>
+            <input type="radio" name="option" value="${index}" 
+              ${userAnswers[currentQuestion] === index ? 'checked' : ''}>
+            ${option}
+          </label>
+        `).join('');
+      }
+
+      quizElement.innerHTML = `
+        <div class="question">${currentQuestion + 1}. ${question.question}</div>
+        <div class="options">${optionsHtml}</div>
+      `;
+
+      // Update button visibility
+      prevButton.style.display = currentQuestion === 0 ? 'none' : 'inline-block';
+      nextButton.style.display = (currentQuestion === questions.length - 1 && !isSubmitted) ? 'none' : 'inline-block';
+      submitButton.style.display = (currentQuestion === questions.length - 1 && !isSubmitted) ? 'inline-block' : 'none';
+      
+      if (isSubmitted) {
+        nextButton.style.display = currentQuestion === questions.length - 1 ? 'none' : 'inline-block';
+        prevButton.style.display = currentQuestion === 0 ? 'none' : 'inline-block';
+        quizElement.querySelectorAll('input').forEach(input => input.disabled = true);
+      }
+
+      // Add radio button listeners only if not submitted
+      if (!isSubmitted) {
+        quizElement.querySelectorAll('input[type="radio"]').forEach(radio => {
+          radio.addEventListener('change', (e) => {
+            userAnswers[currentQuestion] = parseInt(e.target.value);
+          });
+        });
+      }
+    }
+
+    function submitAnswer() {
+      const unansweredIndex = userAnswers.findIndex(answer => answer === null);
+      if (unansweredIndex !== -1) {
+        alert('Please answer all questions before submitting.');
+        currentQuestion = unansweredIndex;
+        displayQuestion();
+        return;
+      }
+
+      isSubmitted = true; // Set submission state
+      const score = userAnswers.reduce(
+        (acc, answer, index) => acc + (answer === questions[index].answer ? 1 : 0),
+        0
+      );
+      resultElement.textContent = `Your score: ${score}/${questions.length}`;
+      currentQuestion = 0; // Reset to first question
+      displayQuestion();
+    }
+
+    // Add restart functionality
+    function restartQuiz() {
+      isSubmitted = false;
+      userAnswers = new Array(questions.length).fill(null);
+      currentQuestion = 0;
+      resultElement.textContent = '';
+      displayQuestion();
+    }
+
+    // Update the submit button to show restart option
+    function checkSubmissionState() {
+      if (isSubmitted) {
+        submitButton.textContent = 'Restart Quiz';
+        submitButton.onclick = restartQuiz;
+      } else {
+        submitButton.textContent = 'Submit';
+        submitButton.onclick = submitAnswer;
+      }
+    }
+
+    // Modify existing functions to check state
+    function nextQuestion() {
+      if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        displayQuestion();
+      }
+      checkSubmissionState();
+    }
+
+    function prevQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        displayQuestion();
+      }
+      checkSubmissionState();
+    }
+
+    // Initialize
+    displayQuestion();
+    checkSubmissionState();
+</script>
+</body>
+</html>
